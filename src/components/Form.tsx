@@ -1,5 +1,26 @@
+import { useState, ChangeEvent } from "react";
 import { categories } from "../data/categories";
+import type { Activity } from "../types";
+
 export default function Form() {
+  const [activity, setactivity] = useState<Activity>({
+    category: 1,
+    name: "",
+    calories: 0,
+  });
+
+  const handleChange = (
+    e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>
+  ) => {
+    const { id, value } = e.target;
+
+    const isNumberField = ["category", "calories"].includes(e.target.id);
+    setactivity({
+      ...activity,
+      [id]: isNumberField ? +value : value,
+    });
+  };
+
   return (
     <form action="" className=" space-y-5 bg-white shadow p-10 rounded-lg">
       <div className="grid grid-cols-1 gap-3">
@@ -8,6 +29,8 @@ export default function Form() {
         </label>
         <select
           id="category"
+          value={activity.category}
+          onChange={handleChange}
           className=" border border-slate-300 p-2 rounded-lg w-full bg-white"
         >
           {categories.map((category) => (
@@ -18,12 +41,14 @@ export default function Form() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-3">
-        <label htmlFor="activity" className=" font-bold">
+        <label htmlFor="name" className=" font-bold">
           Activity:
         </label>
         <input
-          id="activity"
+          id="name"
           type="text"
+          value={activity.name}
+          onChange={handleChange}
           className="border border-slate-300 p-2 rounded-lg"
           placeholder="Ex. Meal, Orange Juice, Salad, Exercise, Weights, Bicycle"
         />
@@ -35,6 +60,8 @@ export default function Form() {
         <input
           id="calories"
           type="number"
+          value={activity.calories}
+          onChange={handleChange}
           className="border border-slate-300 p-2 rounded-lg"
           placeholder="Calories. ex. 300 or 500"
         />
