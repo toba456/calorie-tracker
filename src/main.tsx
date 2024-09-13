@@ -3,9 +3,12 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
+import { ActivityProvider } from "./context/ActivityContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <ActivityProvider>
+      <App />
+    </ActivityProvider>
   </StrictMode>
 );

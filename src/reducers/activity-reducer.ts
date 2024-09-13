@@ -15,13 +15,13 @@ const localStorageActivities = (): Activity[] => {
   const activities = localStorage.getItem("activities");
   return activities ? JSON.parse(activities) : [];
 };
-export const initislState: ActivityState = {
+export const initialState: ActivityState = {
   activities: localStorageActivities(),
   activeId: "",
 };
 
 export const activityReducer = (
-  state: ActivityState = initislState,
+  state: ActivityState = initialState,
   action: ActivityActions
 ) => {
   if (action.type === "save-activity") {

@@ -1,23 +1,12 @@
-import { Dispatch, useMemo } from "react";
+import { useMemo } from "react";
 import { Activity } from "../types";
 import { categories } from "../data/categories";
-import { ActivityActions } from "../reducers/activity-reducer";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
+import { useActivity } from "../hooks/useActivity";
 
-type activitiesProps = {
-  activities: Activity[];
-  dispatch: Dispatch<ActivityActions>;
-};
-export default function ActivityList({
-  activities,
-  dispatch,
-}: activitiesProps) {
-  const categoryName = useMemo(
-    () => (category: Activity["category"]) =>
-      categories.map((cat) => (cat.id === category ? cat.name : "")),
-    [activities]
-  );
+export default function ActivityList() {
+  const { state, dispatch, isEmptyActivities, categoryName } = useActivity();
 
   const handleDeleteActivity = (id: Activity["id"]) => {
     dispatch({
@@ -26,10 +15,7 @@ export default function ActivityList({
     });
     toast.success("Activity deleted 🚫");
   };
-  const isEmptyActivities = useMemo(
-    () => activities.length === 0,
-    [activities]
-  );
+
   return (
     <>
       <h2 className=" text-4xl font-bold text-slate-600 text-center">
@@ -38,7 +24,7 @@ export default function ActivityList({
       {isEmptyActivities ? (
         <p className=" text-lg text-center my-5">No activities...</p>
       ) : (
-        activities.map((activity) => (
+        state.activities.map((activity) => (
           <div
             key={activity.id}
             className=" px-5 py-10 bg-white mt-5 flex justify-between shadow-xl relative"
