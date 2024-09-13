@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { categories } from "../data/categories";
 import type { Activity } from "../types";
 import { ActivityActions, ActivityState } from "../reducers/activity-reducer";
+import { toast, ToastContainer } from "react-toastify";
 
 type FormProps = {
   dispatch: Dispatch<ActivityActions>;
@@ -47,6 +48,7 @@ export default function Form({ dispatch, state }: FormProps) {
     e.preventDefault();
 
     dispatch({ type: "save-activity", payload: { newActivity: activity } });
+    toast.success(`Activity ${!state.activeId ? "created" : "updated"}🔥 `);
     setactivity({
       ...initialState,
       id: uuidv4(),
@@ -108,6 +110,7 @@ export default function Form({ dispatch, state }: FormProps) {
         className=" bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white cursor-pointer disabled:opacity-10"
         value={activity.category === 1 ? "Save Food" : "Save Exercise"}
       />
+      <ToastContainer />
     </form>
   );
 }

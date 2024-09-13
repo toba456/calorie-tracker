@@ -3,6 +3,7 @@ import { Activity } from "../types";
 import { categories } from "../data/categories";
 import { ActivityActions } from "../reducers/activity-reducer";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 
 type activitiesProps = {
   activities: Activity[];
@@ -18,6 +19,13 @@ export default function ActivityList({
     [activities]
   );
 
+  const handleDeleteActivity = (id: Activity["id"]) => {
+    dispatch({
+      type: "remove-activity",
+      payload: { id: id },
+    });
+    toast.success("Activity deleted 🚫");
+  };
   return (
     <>
       <h2 className=" text-4xl font-bold text-slate-600 text-center">
@@ -53,14 +61,7 @@ export default function ActivityList({
             >
               <PencilSquareIcon className=" h-8 w-8 text-gray-800" />
             </button>
-            <button
-              onClick={() =>
-                dispatch({
-                  type: "remove-activity",
-                  payload: { id: activity.id },
-                })
-              }
-            >
+            <button onClick={() => handleDeleteActivity(activity.id)}>
               <TrashIcon className=" h-8 w-8 text-red-500" />
             </button>
           </div>
